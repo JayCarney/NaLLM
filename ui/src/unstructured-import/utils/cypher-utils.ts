@@ -14,9 +14,11 @@ function createNodeStatement(node: NodeType) {
       return;
     }
     console.log(propertyKey, propertyValue);
+    if (propertyKey && propertyValue !== null) {
     propertiesStrings.push(
       `\`${propertyKey}\`: '${propertyValue.toString().replaceAll("'", "\\'")}'`
     );
+  }
   });
   return `CREATE (:\`${node.label}\` {${propertiesStrings.join(", ")}  })`;
 }
@@ -31,10 +33,11 @@ function createRelationshipStatement(relationship: RelationshipType) {
     if (propertyKey === undefined || propertyValue === undefined) {
       return;
     }
-
-    propertiesStrings.push(
-      `\`${propertyKey}\`: '${propertyValue.toString().replaceAll("'", "\\'")}'`
-    );
+    if (propertyKey && propertyValue !== null) {
+      propertiesStrings.push(
+        `\`${propertyKey}\`: '${propertyValue.toString().replaceAll("'", "\\'")}'`
+      );
+    }
   });
   //TODO: Make into single statement
   return `MATCH (source { import_name: '${relationship.start
